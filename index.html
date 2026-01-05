@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onitama Amélioré</title>
+<style>
+body { font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; background-color: #f4f4f4; }
+h1 { margin: 20px 0; }
+#game { display: flex; flex-direction: column; align-items: center; }
+#board { display: grid; grid-template-columns: repeat(5, 60px); grid-template-rows: repeat(5, 60px); gap: 2px; margin-bottom: 20px; }
+.cell { width: 60px; height: 60px; background-color: #fff; border: 1px solid #555; display: flex; justify-content: center; align-items: center; cursor: pointer; position: relative; }
+.cell.valid { background-color: #90ee90; }
+.pawn { width: 40px; height: 40px; border-radius: 50%; display:flex; justify-content:center; align-items:center; color:#fff; font-weight:bold; }
+.player { background-color: #2196f3; }
+.ai { background-color: #f44336; }
+.master::after { content: "M"; position: absolute; font-weight: bold; color: #fff; font-size: 16px; }
+#cards-container { display: flex; flex-direction: column; align-items: center; }
+.card { border: 2px solid #333; border-radius: 8px; padding: 10px; margin: 5px; text-align: center; cursor: pointer; width: 120px; background-color: #fff; }
+.card.selected { border-color: #ff9800; }
+#status { margin-top: 10px; font-weight: bold; }
+</style>
+</head>
+<body>
+<h1>Onitama Amélioré</h1>
+<div id="game">
+  <div id="board"></div>
+  <div id="cards-container">
+    <h2>Vos cartes :</h2>
+    <div id="player-cards"></div>
+  </div>
+  <div id="status"></div>
+</div>
+
+<script>
+// ----- CARTES -----
+const cards = [
+  { "name": "Tiger", "moves": [[-2,0],[1,0]] },
+  { "name": "Dragon", "moves": [[-1,-2],[-1,2],[1,-1],[1,1]] },
+  { "name": "Crab", "moves": [[0,-2],[0,2],[-1,0]] },
+  { "name": "Elephant", "moves": [[0,-1],[0,1],[-1,-1],[-1,1]] },
+  { "name": "Monkey", "moves": [[-1,-1],[-1,1],[1,-1],[1,1]] }
+];
+
+// ----- VARIABLES -----
+const boardEl = document.getElementById('board');
+const playerCardsEl = document.getElementById('player-cards');
+const statusEl = document.getElementById('status');
+
+let board = [];
+let selectedPawn = null;
+let playerCards = [];
+let aiCards = [];
+let sharedCard = null;
+let currentPlayer = 'player';
+let selectedCard = null;
+
+// ----- INITIALISATION -----
+function startGame() {
+  board = Array(5).fill(null).map(() => Array(5).fill(null));
+  // Placer pions
+  board[0][0] = { owner:'ai', type:'pawn' };
+  board[0][2] = { owner:'ai', type:'master' };
+  board[0][4] = { owner:'ai', type:'pawn' };
+  board[4][0] = { owner:'player', type:'pawn' };
+  board[4][2] = { owner:'player', type:'master' };
+  board[4][4] = { owner:'player', type:'pawn' };
+
+  shuffle(cards);
+  playerCards = [cards[0], cards[1]];
+  aiCards = [cards[2], cards[3]];
+  sharedCard = cards[4];
+
+  renderBoard();
+  renderCards();
+  statusEl.textContent = "Votre tour";
+}
+
+// ----- RENDER -----
+function renderBoard(validMoves=[]) {
+  boardEl.innerHTML = '';
+  for (let i=0;i<5;i++) {
+    for (let j=0;j<5;j++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      cell.dataset.row = i;
+      cell.dataset.col = j;
+
+      // surbrillance coups valides
+      if (validMoves.some(m => m[0]===i && m[1]===j)) cell.classList.add('valid');
+
+      const piece = board[i][j];
+      if (piece) {
+        const pawnEl = document.createElement('div');
+        pawnEl.classList.add('pawn', piece.owner);
+        if(piece.type==='master') pawnEl.classList.add('master');
+        pawnEl.textContent = piece.type==='master'?'M':'';
+        cell.appendChild(pawnEl);
+      }
+
+      cell.addEventListener('click', ()=>cellClick(i,j));
+      boardEl.appendChild(cell);
+    }
+  }
+}
+
+// ----- CARTES -----
+function renderCards() {
+  playerCardsEl.innerHTML = '';
+  playerCards.forEach((card, idx)=>{
+    const cardEl = document.createElement('div');
+    cardEl.classList.add('card');
+    cardEl.textContent = card.name;
+    cardEl.addEventListener('click',()=>selectCard(idx));
+    if(card.selected) cardEl.classList.add('selected');
+    playerCardsEl.appendChild(cardEl);
+  });
+}
+
+// ----- SÉLECTION CARTE -----
+function selectCard(idx){
+  playerCards.forEach(c=>c.selected=false);
+  selectedCard = playerCards[idx];
+  selectedCard.selected = true;
+  renderCards();
+  if(selectedPawn) highlightMoves();
+}
+
+// ----- SURBRILLANCE DES COUPS -----
+function highlightMoves(){
+  if(!selectedPawn || !selectedCard) return;
+  const moves = selectedCard.moves.map(m=>[selectedPawn[0]+m[0]* (currentPlayer==='player'? -1 : 1), selectedPawn[1]+m[1]]);
+  const validMoves = moves.filter(m=> m[0]>=0 && m[0]<5 && m[1]>=0 && m[1]<5 && (!board[m[0]][m[1]] || board[m[0]][m[1]].owner!==currentPlayer));
+  renderBoard(validMoves);
+}
+
+// ----- CLIQUE SUR CASE -----
+function cellClick(row,col){
+  if(currentPlayer!=='player') return;
+  const cellPiece = board[row][col];
+  if(cellPiece && cellPiece.owner==='player'){
+    selectedPawn = [row,col];
+    highlightMoves();
+  } else if(selectedPawn && selectedCard){
+    const move = [row-selectedPawn[0], col-selectedPawn[1]];
+    const legal = selectedCard.moves.some(m=>{
+      const dir = m.map(v => v * -1);
+      return dir[0]===move[0] && dir[1]===move[1];
+    });
+    if(!legal) return;
+    const piece = board[selectedPawn[0]][selectedPawn[1]];
+    // capturer
+    board[row][col] = piece;
+    board[selectedPawn[0]][selectedPawn[1]] = null;
+    // échange carte
+    const temp = sharedCard;
+    sharedCard = selectedCard;
+    playerCards[playerCards.indexOf(selectedCard)] = temp;
+    selectedPawn=null;
+    selectedCard=null;
+    renderBoard();
+    renderCards();
+    // vérifier victoire
+    if(checkVictory()) return;
+    currentPlayer='ai';
+    statusEl.textContent="Tour IA";
+    setTimeout(aiMove,500);
+  }
+}
+
+// ----- IA -----
+function aiMove(){
+  let moves=[];
+  aiCards.forEach(card=>{
+    for(let i=0;i<5;i++){
+      for(let j=0;j<5;j++){
+        const p=board[i][j];
+        if(p && p.owner==='ai'){
+          card.moves.forEach(m=>{
+            const ni=i+m[0], nj=j+m[1];
+            if(ni>=0 && ni<5 && nj>=0 && nj<5 && (!board[ni][nj] || board[ni][nj].owner!=='ai')){
+              moves.push({card,from:[i,j],to:[ni,nj]});
+            }
+          });
+        }
+      }
+    }
+  });
+  if(moves.length===0){statusEl.textContent="IA ne peut pas jouer, vous gagnez !"; return;}
+  const move = moves[Math.floor(Math.random()*moves.length)];
+  board[move.to[0]][move.to[1]]=board[move.from[0]][move.from[1]];
+  board[move.from[0]][move.from[1]]=null;
+  const temp = sharedCard;
+  sharedCard = move.card;
+  aiCards[aiCards.indexOf(move.card)] = temp;
+  renderBoard();
+  if(checkVictory()) return;
+  currentPlayer='player';
+  statusEl.textContent="Votre tour";
+}
+
+// ----- CHECK VICTOIRE -----
+function checkVictory(){
+  // Vérifier Maître capturé ou Temple atteint
+  for(let i=0;i<5;i++){
+    for(let j=0;j<5;j++){
+      const p = board[i][j];
+      if(p && p.type==='master'){
+        if(p.owner==='player' && i===0 && j===2){ statusEl.textContent="Vous avez gagné !"; return true;}
+        if(p.owner==='ai' && i===4 && j===2){ statusEl.textContent="IA a gagné !"; return true;}
+      }
+    }
+  }
+  // Vérifier Maître capturé
+  let playerMaster=false, aiMaster=false;
+  board.flat().forEach(p=>{if(p && p.type==='master'){if(p.owner==='player') playerMaster=true; else aiMaster=true;}});
+  if(!playerMaster){statusEl.textContent="IA a gagné !"; return true;}
+  if(!aiMaster){statusEl.textContent="Vous avez gagné !"; return true;}
+  return false;
+}
+
+// ----- UTIL -----
+function shuffle(array){for(let i=array.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [array[i],array[j]]=[array[j],array[i]];}}
+
+// ----- START -----
+startGame();
+</script>
+</body>
+</html>
