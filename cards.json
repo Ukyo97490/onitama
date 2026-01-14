@@ -1,0 +1,201 @@
+{
+  "cards": [
+    {
+      "id": 1,
+      "name": "Tigre",
+      "moves": [
+        {"x": 0, "y": -2},
+        {"x": 0, "y": 1}
+      ],
+      "stamp": "隆",
+      "description": "Le tigre bondit en avant et recule prudemment"
+    },
+    {
+      "id": 2,
+      "name": "Dragon",
+      "moves": [
+        {"x": -2, "y": -1},
+        {"x": 2, "y": -1},
+        {"x": -1, "y": 1},
+        {"x": 1, "y": 1}
+      ],
+      "stamp": "竜",
+      "description": "Le dragon vole dans les quatre directions"
+    },
+    {
+      "id": 3,
+      "name": "Grenouille",
+      "moves": [
+        {"x": -1, "y": -1},
+        {"x": -2, "y": 0},
+        {"x": 1, "y": 1}
+      ],
+      "stamp": "蛙",
+      "description": "La grenouille saute en diagonale"
+    },
+    {
+      "id": 4,
+      "name": "Lapin",
+      "moves": [
+        {"x": 1, "y": -1},
+        {"x": 2, "y": 0},
+        {"x": -1, "y": 1}
+      ],
+      "stamp": "兎",
+      "description": "Le lapin bondit rapidement"
+    },
+    {
+      "id": 5,
+      "name": "Crabe",
+      "moves": [
+        {"x": 0, "y": -1},
+        {"x": -2, "y": 0},
+        {"x": 2, "y": 0}
+      ],
+      "stamp": "蟹",
+      "description": "Le crabe se déplace latéralement"
+    },
+    {
+      "id": 6,
+      "name": "Éléphant",
+      "moves": [
+        {"x": -1, "y": -1},
+        {"x": -1, "y": 0},
+        {"x": 1, "y": -1},
+        {"x": 1, "y": 0}
+      ],
+      "stamp": "象",
+      "description": "L'éléphant avance avec puissance"
+    },
+    {
+      "id": 7,
+      "name": "Oie",
+      "moves": [
+        {"x": -1, "y": -1},
+        {"x": -1, "y": 0},
+        {"x": 1, "y": 0},
+        {"x": 1, "y": 1}
+      ],
+      "stamp": "雁",
+      "description": "L'oie vole en formation"
+    },
+    {
+      "id": 8,
+      "name": "Mante",
+      "moves": [
+        {"x": -1, "y": -1},
+        {"x": 1, "y": -1},
+        {"x": 0, "y": 1}
+      ],
+      "stamp": "蟷",
+      "description": "La mante religieuse attaque précisément"
+    },
+    {
+      "id": 9,
+      "name": "Bœuf",
+      "moves": [
+        {"x": 0, "y": -1},
+        {"x": 1, "y": 0},
+        {"x": 0, "y": 1}
+      ],
+      "stamp": "牛",
+      "description": "Le bœuf charge droit devant"
+    },
+    {
+      "id": 10,
+      "name": "Coq",
+      "moves": [
+        {"x": -1, "y": 0},
+        {"x": 0, "y": -1},
+        {"x": 1, "y": 1}
+      ],
+      "stamp": "鶏",
+      "description": "Le coq picore avec agilité"
+    },
+    {
+      "id": 11,
+      "name": "Singe",
+      "moves": [
+        {"x": -1, "y": -1},
+        {"x": 1, "y": -1},
+        {"x": -1, "y": 1},
+        {"x": 1, "y": 1}
+      ],
+      "stamp": "猿",
+      "description": "Le singe bondit en diagonale"
+    },
+    {
+      "id": 12,
+      "name": "Cheval",
+      "moves": [
+        {"x": 0, "y": -1},
+        {"x": -1, "y": 0},
+        {"x": 0, "y": 1}
+      ],
+      "stamp": "馬",
+      "description": "Le cheval galope fidèlement"
+    },
+    {
+      "id": 13,
+      "name": "Sanglier",
+      "moves": [
+        {"x": 0, "y": -1},
+        {"x": -1, "y": 0},
+        {"x": 1, "y": 0}
+      ],
+      "stamp": "猪",
+      "description": "Le sanglier fonce sauvagement"
+    },
+    {
+      "id": 14,
+      "name": "Anguille",
+      "moves": [
+        {"x": -1, "y": -1},
+        {"x": 1, "y": 0},
+        {"x": -1, "y": 1}
+      ],
+      "stamp": "鰻",
+      "description": "L'anguille glisse avec fluidité"
+    },
+    {
+      "id": 15,
+      "name": "Cobra",
+      "moves": [
+        {"x": 1, "y": -1},
+        {"x": -1, "y": 0},
+        {"x": 1, "y": 1}
+      ],
+      "stamp": "蛇",
+      "description": "Le cobra frappe rapidement"
+    },
+    {
+      "id": 16,
+      "name": "Grue",
+      "moves": [
+        {"x": 0, "y": -1},
+        {"x": -1, "y": 1},
+        {"x": 1, "y": 1}
+      ],
+      "stamp": "鶴",
+      "description": "La grue se tient gracieusement"
+    }
+  ],
+  "rules": {
+    "boardSize": 5,
+    "piecesPerPlayer": 5,
+    "cardsPerPlayer": 2,
+    "victoryConditions": [
+      "Capturer le maître adverse",
+      "Déplacer son maître sur le temple adverse"
+    ]
+  },
+  "gameInfo": {
+    "name": "Onitama",
+    "designer": "Shimpei Sato",
+    "publisher": "Arcane Wonders",
+    "players": 2,
+    "playTime": "15-20 minutes",
+    "year": 2014,
+    "description": "Un jeu de stratégie abstrait inspiré des arts martiaux où deux joueurs s'affrontent avec des mouvements changeants à chaque tour."
+  }
+}
