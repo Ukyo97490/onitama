@@ -6,6 +6,7 @@ Un jeu de stratégie abstrait inspiré des arts martiaux, avec une esthétique z
 
 ## 🎮 Caractéristiques
 
+- **Règles intégrées** - Modal complet avec explications détaillées accessible à tout moment
 - **Mode IA intégré** - Affrontez une intelligence artificielle avec 3 niveaux de difficulté
 - **Interface zen minimaliste** avec esthétique japonaise
 - **Choix du joueur** - Sélectionnez votre couleur (Bleu ou Rouge)
@@ -15,7 +16,6 @@ Un jeu de stratégie abstrait inspiré des arts martiaux, avec une esthétique z
   - **Difficile** : Analyse avancée avec contrôle du centre et protection du maître
 - **Prévisualisation des déplacements** en temps réel
 - **16 cartes uniques** avec mouvements variés
-- **Animations fluides** inspirées du mouvement de l'eau
 - **Indicateur visuel** quand l'IA réfléchit (💭)
 - **Responsive design** pour mobile et desktop
 - **Pur HTML/CSS/JavaScript** - aucun framework requis
@@ -71,6 +71,23 @@ Au début de chaque partie :
 - **💭** : L'IA est en train de réfléchir
 - **🤖 IA** : Badge indiquant le joueur contrôlé par l'IA
 - Les mouvements de l'IA sont animés pour que vous puissiez suivre sa stratégie
+
+## 📖 Règles du Jeu
+
+### Accéder aux règles
+- Cliquez sur le bouton **"📖 Règles du Jeu"** en haut de la page
+- Sur l'écran de sélection, cliquez sur **"Consultez les règles"**
+- Les règles sont accessibles à tout moment, même pendant une partie
+- Fermez avec la touche **Échap** ou en cliquant sur la croix
+
+### Contenu des règles
+Le modal des règles contient :
+- 🎯 **Objectifs** : Les deux façons de gagner
+- 🎴 **Les pièces** : Maître et pions expliqués
+- 🎮 **Comment jouer** : Guide étape par étape
+- 🃏 **Cartes de mouvement** : Comprendre les symboles
+- 💡 **Conseils stratégiques** : Astuces pour s'améliorer
+- 🤖 **Niveaux d'IA** : Description de chaque difficulté
 
 ## 🚀 Déploiement sur GitHub Pages
 

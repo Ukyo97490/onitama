@@ -867,4 +867,37 @@ class OnitamaGame {
 let game;
 window.addEventListener('DOMContentLoaded', () => {
     game = new OnitamaGame();
+    initRulesModal();
 });
+
+// Gestion du modal des règles
+function initRulesModal() {
+    const rulesBtn = document.getElementById('rules-btn');
+    const rulesModal = document.getElementById('rules-modal');
+    const rulesClose = document.getElementById('rules-close');
+    const rulesOverlay = document.querySelector('.rules-overlay');
+    const rulesLinkSelection = document.getElementById('rules-link-selection');
+
+    function openRules(e) {
+        if (e) e.preventDefault();
+        rulesModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Empêcher le scroll
+    }
+
+    function closeRules() {
+        rulesModal.style.display = 'none';
+        document.body.style.overflow = ''; // Restaurer le scroll
+    }
+
+    if (rulesBtn) rulesBtn.addEventListener('click', openRules);
+    if (rulesLinkSelection) rulesLinkSelection.addEventListener('click', openRules);
+    if (rulesClose) rulesClose.addEventListener('click', closeRules);
+    if (rulesOverlay) rulesOverlay.addEventListener('click', closeRules);
+
+    // Fermer avec la touche Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && rulesModal.style.display === 'flex') {
+            closeRules();
+        }
+    });
+}
